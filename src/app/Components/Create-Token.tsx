@@ -119,8 +119,8 @@ const CreateToken: React.FC = () => {
           { label: "Base Price (in ETH)", value: basePrice, setter: setBasePrice },
           { label: "Price Increase per Token (in ETH)", value: priceIncreasePerToken, setter: setPriceIncreasePerToken },
           { label: "Price Increase per 100 Followers (in ETH)", value: priceIncreasePer100Followers, setter: setPriceIncreasePer100Followers },
-          { label: "Min Discount (in ETH)", value: minBonus, setter: setMinBonus },
-          { label: "Max Discount (in ETH)", value: maxBonus, setter: setMaxBonus },
+          { label: "Min Bonus (%)", value: minBonus, setter: setMinBonus },
+          { label: "Max Bonus (%)", value: maxBonus, setter: setMaxBonus },
         ].map(({ label, value, setter }, index) => (
           <motion.div
             key={index}
