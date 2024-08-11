@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <Link href="/" className="hover:text-blue-400">Home</Link>
+          <Link href="/" className="hover:text-blue-400">ST</Link>
         </motion.div>
         <motion.div
           className="flex space-x-4"
