@@ -164,15 +164,26 @@ const BuyToken: React.FC<BuyTokenProps> = ({ token }) => {
 
     let walletClient;
     try {
-      walletClient = createWalletClient({
+      const walletClient = createWalletClient({
         chain: {
           id: 84532,
+          name: 'Base Sepolia',
+          network: 'base-sepolia',
+          nativeCurrency: {
+            decimals: 18,
+            name: 'Base Sepolia Ether',
+            symbol: 'ETH',
+          },
           rpcUrls: {
-            public: "https://base-sepolia.g.alchemy.com/v2/9WBG_MVRsmOhaR5bEVKYclPwb_q9tIiw",
-            websocket: "https://base-sepolia.g.alchemy.com/v2/9WBG_MVRsmOhaR5bEVKYclPwb_q9tIiw",
+            default: {
+              http: ["https://base-sepolia.g.alchemy.com/v2/9WBG_MVRsmOhaR5bEVKYclPwb_q9tIiw"],
+            },
+            public: {
+              http: ["https://base-sepolia.g.alchemy.com/v2/9WBG_MVRsmOhaR5bEVKYclPwb_q9tIiw"],
+            },
           },
         },
-        transport: custom(window ? window.ethereum : ""),
+        transport: custom(window.ethereum),
       });
 
       if (walletClient && publicClient && contractAddress && address) {
