@@ -226,7 +226,7 @@ const BuyToken: React.FC<BuyTokenProps> = ({ token }) => {
         {name} Token Purchase
       </h1>
 
-      {isConnected ? (
+       
         <div className="bg-white shadow-2xl rounded-lg p-8 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <motion.div 
@@ -301,21 +301,7 @@ const BuyToken: React.FC<BuyTokenProps> = ({ token }) => {
             )}
           </motion.div>
         </div>
-      ) : (
-        <motion.div 
-          className="text-center"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <button
-            onClick={openConnectModal}
-            className="bg-blue-600 text-white px-8 py-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-xl transition duration-300 ease-in-out transform hover:scale-105"
-          >
-            Connect Wallet
-          </button>
-        </motion.div>
-      )}
+    
     </motion.div>
   );
 };
