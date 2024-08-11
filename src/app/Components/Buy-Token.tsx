@@ -154,7 +154,7 @@ const BuyToken: React.FC<BuyTokenProps> = ({ token }) => {
 
   const handleBuy = async () => {
     if (!isConnected) {
-      openConnectModal();
+      openConnectModal;
       return;
     }
 
