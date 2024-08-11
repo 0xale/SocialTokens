@@ -14,13 +14,14 @@ import { baseSepolia } from 'viem/chains';
 import contractABI from '../Contract/SocialTokenABI.json';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
-
+import { motion } from 'framer-motion';
 
 interface BuyTokenProps {
   token: string | null;
 }
 
 const BuyToken: React.FC<BuyTokenProps> = ({ token }) => {
+  // ... [Keep all the existing state variables and functions]
   const params = useParams();
   const { address, isConnected } = useAccount();
   const [amount, setAmount] = useState<string>('');
@@ -162,7 +163,7 @@ const BuyToken: React.FC<BuyTokenProps> = ({ token }) => {
     setSuccessMessage('');
     setErrorMessage('');
 
-    let walletClient;
+    
     try {
       const walletClient = createWalletClient({
         chain: {
@@ -209,89 +210,127 @@ const BuyToken: React.FC<BuyTokenProps> = ({ token }) => {
     }
   };
 
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.5 } }
+  };
+
   return (
-    <div className="container mx-auto p-6 max-w-lg">
-      <h1 className="text-3xl font-bold mb-6 text-center text-gray-900">{name} Token Purchase</h1>
+    <motion.div 
+      initial="hidden"
+      animate="visible"
+      variants={fadeIn}
+      className="container mx-auto p-6 max-w-4xl"
+    >
+      <h1 className="text-4xl font-bold mb-8 text-center text-gray-900">
+        {name} Token Purchase
+      </h1>
 
       {isConnected ? (
-        <div className="bg-white shadow-lg rounded-lg p-6 space-y-6">
-          <div className="space-y-4 text-gray-700">
-            <div className="flex flex-col space-y-2">
-              <p className="font-semibold">Contract Address:</p>
-              <p>{contractAddress}</p>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <p className="font-semibold">Total Supply:</p>
-              <p>{totalSupply} {symbol}</p>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <p className="font-semibold">Your {symbol} Token Balance:</p>
-              <p>{tokenBalance} {symbol}</p>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <p className="font-semibold">Farcaster Followers:</p>
-              <p>{farcasterFollowers !== null ? farcasterFollowers : 'Loading...'}</p>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <p className="font-semibold">Base Price:</p>
-              <p>{basePrice} ETH</p>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <p className="font-semibold">Price Increase Per Token:</p>
-              <p>{priceIncreasePerToken} ETH</p>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <p className="font-semibold">Price Increase Per 100 Followers:</p>
-              <p>{priceIncreasePer100Followers} ETH</p>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <p className="font-semibold">Min Bonus:</p>
-              <p>{minDiscount} %</p>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <p className="font-semibold">Max Bonus:</p>
-              <p>{maxDiscount} %</p>
-            </div>
+        <div className="bg-white shadow-2xl rounded-lg p-8 space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.div 
+              className="space-y-4 text-gray-700"
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <InfoItem title="Contract Address" value={contractAddress} />
+              <InfoItem title="Total Supply" value={`${totalSupply} ${symbol}`} />
+              <InfoItem title={`Your ${symbol} Token Balance`} value={`${tokenBalance} ${symbol}`} />
+              <InfoItem title="Farcaster Followers" value={farcasterFollowers !== null ? farcasterFollowers : 'Loading...'} />
+              <InfoItem title="Base Price" value={`${basePrice} ETH`} />
+            </motion.div>
+            <motion.div 
+              className="space-y-4 text-gray-700"
+              initial={{ x: 50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <InfoItem title="Price Increase Per Token" value={`${priceIncreasePerToken} ETH`} />
+              <InfoItem title="Price Increase Per 100 Followers" value={`${priceIncreasePer100Followers} ETH`} />
+              <InfoItem title="Min Bonus" value={`${minDiscount}%`} />
+              <InfoItem title="Max Bonus" value={`${maxDiscount}%`} />
+            </motion.div>
           </div>
 
-          <div className="space-y-4">
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="Amount of tokens to buy"
-              className="w-full border border-gray-300 p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-            />
-            <button
-              onClick={handleBuy}
-              disabled={isLoading}
-              className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {isLoading ? 'Buying...' : 'Buy Tokens'}
-            </button>
+          <motion.div 
+            className="space-y-6"
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
+            <div className="flex items-center space-x-4">
+              <input
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="Amount of tokens to buy"
+                className="flex-grow border border-gray-300 p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              />
+              <button
+                onClick={handleBuy}
+                disabled={isLoading}
+                className="bg-blue-600 text-white px-6 py-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:scale-105"
+              >
+                {isLoading ? 'Buying...' : 'Buy Token'}
+              </button>
+            </div>
             {calculatedPrice && (
-              <p className="text-lg font-semibold text-gray-800">Estimated Price: {calculatedPrice} ETH</p>
+              <p className="text-xl font-semibold text-gray-800 text-center">
+                Estimated Price: {calculatedPrice} ETH
+              </p>
             )}
             {successMessage && (
-              <p className="text-green-600 text-center">{successMessage}</p>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-green-600 text-center font-semibold"
+              >
+                {successMessage}
+              </motion.p>
             )}
             {errorMessage && (
-              <p className="text-red-600 text-center">{errorMessage}</p>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-red-600 text-center font-semibold"
+              >
+                {errorMessage}
+              </motion.p>
             )}
-          </div>
+          </motion.div>
         </div>
       ) : (
-        <div className="text-center">
+        <motion.div 
+          className="text-center"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <button
             onClick={openConnectModal}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-blue-600 text-white px-8 py-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-xl transition duration-300 ease-in-out transform hover:scale-105"
           >
             Connect Wallet
           </button>
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 };
+
+interface InfoItemProps {
+  title: string;
+  value: string | number; // Adjust this type based on what 'value' could be.
+}
+
+const InfoItem: React.FC<InfoItemProps> = ({ title, value }) => (
+  <div className="flex flex-col space-y-1">
+    <p className="font-semibold text-gray-600">{title}:</p>
+    <p className="text-gray-900">{value}</p>
+  </div>
+);
+
 
 export default BuyToken;
